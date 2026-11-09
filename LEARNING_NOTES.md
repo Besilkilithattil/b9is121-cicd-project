@@ -81,3 +81,14 @@ request encountered curl error 56, a connection reset during container startup.
 The readiness check now retries connection errors for a bounded period. It still
 fails the job if no successful response arrives. This is CI evidence; perform and
 record the separate cloud Postman check required by the assignment.
+
+## Observed cloud authentication issue
+
+The first automated cloud run passed tests and the container check, but Azure
+login returned `AADSTS700213`: no matching federated identity record. The GitHub
+token's subject included immutable account and repository IDs, while the initial
+Azure credential used the older name-only subject. The credential was updated
+to match the exact subject shown in the action's diagnostic log, still restricted
+to this repository and `refs/heads/main`. No password was added or trust widened
+to other branches. This was an authentication configuration issue, not a Flask
+or network fault.
