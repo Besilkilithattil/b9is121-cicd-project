@@ -12,7 +12,7 @@
     },
     {
       "key": "expected_version",
-      "value": "1.1",
+      "value": "2.0",
       "type": "string"
     }
   ],
@@ -72,6 +72,46 @@
             "type": "text/javascript",
             "exec": [
               "pm.test(\"HTTP 405\", () => pm.response.to.have.status(405));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Application health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/api/health"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Health HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Application healthy\", () => pm.expect(pm.response.json().status).to.eql(\"healthy\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Release metadata",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/api/version"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Release HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Release version matches\", () => pm.expect(pm.response.json().version).to.eql(pm.collectionVariables.get(\"expected_version\")));"
             ]
           }
         }

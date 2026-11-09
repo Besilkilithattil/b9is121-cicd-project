@@ -3,14 +3,24 @@
 These additions were prepared with Codex assistance on 9 November 2026:
 `test_app.py`, `Dockerfile`, `.dockerignore`, the dependency files, and
 `.github/workflows/ci.yml`, Azure setup, Postman examples, and documentation.
+The version 2.0 redesign (`templates/index.html`, `static/styles.css`,
+`static/app.js`, JSON routes and extra tests) was also substantially AI-assisted.
 They are learning material, not a claim of independently authored coursework.
 The application began with the Flask quickstart example, with a version label
 added during guided practice. Declare assistance according to the assignment brief.
 
 ## What to understand and demonstrate
 
-- `python -m pytest -q` checks the homepage response, an unknown URL, and a
-  disallowed HTTP method. A failing check must prevent later deployment.
+- `python -m pytest -q` runs seven checks covering the homepage, unknown URL,
+  disallowed method, health JSON, release JSON, and both static assets. A failing
+  check must prevent later deployment. The release assertion must be updated
+  deliberately alongside a version change.
+- The browser playground sends real same-origin requests; 404 and 405 are
+  intentional negative tests. No results are simulated. Timings are per request,
+  not historic uptime or production monitoring.
+- GitHub passes its commit SHA as Docker build argument `BUILD_SHA`; the image
+  exposes it in release JSON and the dashboard footer. Local builds default to
+  `local`. The template and assets are explicitly copied into the image.
 - `requirements.txt` records the runtime packages; `requirements-dev.txt`
   adds pytest for development and continuous integration.
 - `docker build -t b9is121-app:local .` packages the app with Python and Gunicorn.

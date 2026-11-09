@@ -34,7 +34,7 @@ jobs:
       - name: Test HTTP behavior
         run: python -m pytest -q
       - name: Build Linux container
-        run: docker build --label "org.opencontainers.image.revision=$GITHUB_SHA" -t assignment-app:test .
+        run: docker build --build-arg "BUILD_SHA=$GITHUB_SHA" --label "org.opencontainers.image.revision=$GITHUB_SHA" -t assignment-app:test .
       - name: Check the running container
         shell: bash
         run: |

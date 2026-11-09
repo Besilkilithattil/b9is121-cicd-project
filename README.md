@@ -1,8 +1,17 @@
 # B9IS121 CI/CD learning project
 
-A small Flask application displays a welcome message and version number. The
-project demonstrates automated tests, Docker packaging, and deployment to Azure
-Container Apps from GitHub Actions.
+DeployLab is an interactive Flask dashboard by Besil Killthatill Eldho. It has a
+responsive interface, an API playground with response/header views, and four real
+HTTP checks. It demonstrates Docker packaging and automated deployment to Azure
+Container Apps from GitHub Actions. Current release: **2.0**.
+
+- `/` serves the dashboard from `templates/index.html` and `static/`.
+- `/api/health` returns JSON application health.
+- `/api/version` returns the release and build commit.
+- **Run live checks** tests health, release, expected 404 and expected 405 responses.
+
+Displayed request timings come from the browser. The architecture diagram describes
+the configured workflow; pipeline execution history is linked to GitHub Actions.
 
 Live application: https://b9is121-app.victoriouspebble-d3aeb62f.francecentral.azurecontainerapps.io/
 
@@ -76,7 +85,8 @@ client secret is stored in this repository.
 
 ## Demonstrating an update
 
-1. Change the version text in `app.py` and save it.
+1. Change `VERSION` in `app.py`, update the expected release in `test_app.py`
+   and the Postman collection, and save the files.
 2. Run `python -m pytest -q`.
 3. Commit and push the change to `main`.
 4. Open GitHub Actions and wait for every pipeline step to pass.

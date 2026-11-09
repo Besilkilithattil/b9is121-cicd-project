@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Besil's interactive cloud deployment lab. Explore the application, test live HTTP endpoints and follow the release architecture.">
+  <title>DeployLab — Besil's cloud project</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%230b3238'/%3E%3Cpath d='M19 17h13a15 15 0 0 1 0 30H19z' fill='none' stroke='%23cbf68a' stroke-width='7'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+<body data-version="{{ version }}">
+<svg class="icon-defs" aria-hidden="true"><defs>
+  <symbol id="grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="terminal" viewBox="0 0 24 24"><path d="m5 7 5 5-5 5m8 0h6"/></symbol>
+  <symbol id="branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="6" cy="19" r="2"/><path d="M6 7v10m12-9a9 9 0 0 1-9 8H6"/></symbol>
+  <symbol id="book" viewBox="0 0 24 24"><path d="M12 6c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V5c-3-1-6-1-9 1v15"/></symbol>
+  <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+  <symbol id="external" viewBox="0 0 24 24"><path d="M14 3h7v7m0-7L10 14M10 3H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-6"/></symbol>
+  <symbol id="copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"/></symbol>
+  <symbol id="check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+  <symbol id="cube" viewBox="0 0 24 24"><path d="m12 2 9 5v10l-9 5-9-5V7l9-5ZM3 7l9 5 9-5m-9 5v10"/></symbol>
+  <symbol id="cloud" viewBox="0 0 24 24"><path d="M6 18a5 5 0 0 1-1-10 7 7 0 0 1 13-2 6 6 0 0 1 0 12H6Z"/></symbol>
+</defs></svg>
+<a class="skip-link" href="#main">Skip to content</a>
+<aside class="sidebar">
+  <a class="brand" href="#overview" aria-label="DeployLab overview"><span class="brand-mark">D<span></span></span><span>DeployLab<small>CLOUD DELIVERY LAB</small></span></a>
+  <button class="mobile-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="sidebar-content">☰</button>
+  <div class="sidebar-content" id="sidebar-content">
+    <p class="nav-label">WORKSPACE</p>
+    <nav aria-label="Main navigation">
+      <a class="nav-item active" href="#overview" aria-current="location"><svg><use href="#grid"/></svg>Overview<span class="nav-dot"></span></a>
+      <a class="nav-item" href="#playground"><svg><use href="#terminal"/></svg>API Playground</a>
+      <a class="nav-item" href="#architecture"><svg><use href="#branch"/></svg>Architecture</a>
+      <a class="nav-item" href="#guide"><svg><use href="#book"/></svg>Project guide</a>
+    </nav>
+    <div class="sidebar-project"><span class="tiny-badge">B9IS121</span><h3>Small app.<br>Real delivery.</h3><p>From a Git commit to a running cloud container.</p><a href="https://github.com/Besilkilithattil/b9is121-cicd-project" target="_blank" rel="noopener noreferrer">Explore the code <svg><use href="#external"/></svg></a></div>
+    <div class="sidebar-bottom"><span class="avatar">BE</span><div><strong>Besil Eldho</strong><span>MSc Cybersecurity</span></div><span class="presence" aria-label="Project owner"></span></div>
+  </div>
+</aside>
+<main id="main">
+  <header class="topbar"><div class="breadcrumb">Workspace <span>/</span> <strong>Overview</strong></div><div class="topbar-right"><span class="status-pill" id="connection-status"><i></i>Checking application</span><a class="icon-button" href="https://github.com/Besilkilithattil/b9is121-cicd-project" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub repository"><svg><use href="#external"/></svg></a></div></header>
+  <div class="page-content">
+    <section id="overview" class="overview section-anchor">
+      <div class="page-heading"><div><p class="eyebrow">BUILD. TEST. DEPLOY.</p><h1>Your cloud, in action<span>.</span></h1><p>A little code. A complete journey to the cloud.</p></div><span class="version-tag"><i></i>Version {{ version }}</span></div>
+      <div class="hero">
+        <div class="hero-copy"><span class="hero-eyebrow"><span></span>Welcome to my project</span><h2>From local code.<br>To the cloud.</h2><p>A working deployment lab by <strong>Besil Killthatill Eldho.</strong> Explore the architecture, send a real request, and see what comes back.</p><div class="hero-actions"><button class="button button-lime" id="hero-run">Run live checks <svg><use href="#arrow"/></svg></button><a class="hero-secondary" href="https://github.com/Besilkilithattil/b9is121-cicd-project/actions" target="_blank" rel="noopener noreferrer">View pipeline <svg><use href="#external"/></svg></a></div></div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div>
+          <div class="visual-wire wire-left"></div><div class="visual-wire wire-right"></div>
+          <div class="floating-node node-code"><svg><use href="#terminal"/></svg><span>CODE</span></div>
+          <div class="container-stack"><div class="stack-layer layer-bottom"></div><div class="stack-layer layer-mid"></div><div class="stack-layer layer-top"><svg><use href="#cube"/></svg></div><span class="stack-label">ONE CONTAINER.<br>EVERY ENVIRONMENT.</span></div>
+          <div class="floating-node node-cloud"><svg><use href="#cloud"/></svg><span>CLOUD</span></div><div class="visual-caption"><span></span>Python · Docker · Azure</div>
+        </div>
+      </div>
+      <div class="metrics" aria-label="Application details">
+        <div class="metric"><span class="metric-icon"><svg><use href="#cube"/></svg></span><div><p>Application release</p><strong>v{{ version }} <span class="sub-badge">CURRENT</span></strong></div></div>
+        <div class="metric"><span class="metric-icon"><svg><use href="#cloud"/></svg></span><div><p>You're connected to</p><strong id="runtime-label">This application</strong></div></div>
+        <div class="metric"><span class="metric-icon"><svg><use href="#terminal"/></svg></span><div><p>Last request</p><strong id="latency-value">Not measured <small>yet</small></strong></div></div>
+        <div class="metric"><span class="metric-icon"><svg><use href="#check"/></svg></span><div><p>Live checks</p><strong id="check-summary">— <small>not run yet</small></strong></div></div>
+      </div>
+    </section>
+    <section id="playground" class="section-anchor">
+      <div class="section-heading"><div><p class="eyebrow">TRY IT YOURSELF</p><h2>Less theory. More testing.</h2></div><span class="section-note">Real requests to this application <span class="small-dot"></span></span></div>
+      <div class="playground-grid">
+        <div class="card api-card"><div class="card-heading"><div class="card-title"><span class="square-icon"><svg><use href="#terminal"/></svg></span><div><h3>API Playground</h3><p>Your window into the application.</p></div></div><span class="outlined-label">HTTP</span></div>
+          <label for="endpoint" class="input-label">Choose a request</label><select id="endpoint"><option value="health">GET /api/health — Application health</option><option value="version">GET /api/version — Release details</option><option value="missing">GET /does-not-exist — Expected 404</option><option value="method">POST / — Expected 405</option></select>
+          <div class="request-bar"><span id="request-method" class="method-label">GET</span><code id="request-path">/api/health</code><button id="send-request" class="button button-dark">Send request <svg><use href="#arrow"/></svg></button></div>
+          <div class="response-toolbar"><div class="response-tabs" role="tablist" aria-label="Response details"><button class="selected" role="tab" id="body-tab" aria-selected="true" aria-controls="response-output" data-response-tab="body">Response</button><button role="tab" id="headers-tab" aria-selected="false" aria-controls="response-output" data-response-tab="headers">Headers</button></div><div class="response-meta"><span id="response-status">Waiting</span><span id="response-time">—</span><button class="copy-button" id="copy-response" aria-label="Copy response" title="Copy response" disabled><svg><use href="#copy"/></svg></button></div></div>
+          <div class="terminal-window"><div class="terminal-top"><span></span><span></span><span></span><span class="terminal-name" id="terminal-filename">response.json</span></div><pre id="response-output" role="tabpanel" aria-labelledby="body-tab" tabindex="0">Send a request to inspect the response.</pre></div><p class="console-footnote" id="request-note" role="status">Health and version checks return JSON. Error checks intentionally return 404 or 405.</p>
+        </div>
+        <div class="card checks-card" id="checks"><div class="card-heading"><div><p class="eyebrow">VERIFY THE BASICS</p><h3>Live application checks</h3></div><span class="checks-count" id="checks-count">0/4</span></div><p class="checks-description">Four real checks. No simulated results.</p><ol class="check-list">
+          <li data-check="health"><span class="check-state">01</span><div><strong>Application responds</strong><small>GET /api/health · expect 200 + healthy</small></div><span class="check-result">Not run</span></li>
+          <li data-check="version"><span class="check-state">02</span><div><strong>Release matches</strong><small>GET /api/version · expect {{ version }}</small></div><span class="check-result">Not run</span></li>
+          <li data-check="missing"><span class="check-state">03</span><div><strong>Unknown route handled</strong><small>GET /does-not-exist · expect 404</small></div><span class="check-result">Not run</span></li>
+          <li data-check="method"><span class="check-state">04</span><div><strong>Read-only route protected</strong><small>POST / · expect 405</small></div><span class="check-result">Not run</span></li>
+        </ol><button class="button button-outline" id="run-checks">Run all checks <svg><use href="#arrow"/></svg></button><p id="checks-note" class="checks-footnote" role="status">Checks run from your browser when you click.</p><div class="check-tip"><svg><use href="#book"/></svg><p><strong>Why test errors?</strong><br>A predictable 404 or 405 is a successful test of how the app handles an invalid request.</p></div></div>
+      </div>
+    </section>
+    <section id="architecture" class="section-anchor architecture-section"><div class="section-heading"><div><p class="eyebrow">UNDER THE HOOD</p><h2>One commit. A connected workflow.</h2></div><a class="text-link" href="https://github.com/Besilkilithattil/b9is121-cicd-project/blob/main/.github/workflows/ci.yml" target="_blank" rel="noopener noreferrer">Read the workflow <svg><use href="#external"/></svg></a></div>
+      <div class="card architecture-card"><div class="flow-track"><div class="flow-step"><span class="flow-number">01</span><div class="flow-icon"><svg><use href="#branch"/></svg></div><h3>Commit</h3><p>Push a change<br>to GitHub main.</p><span>Git + GitHub</span></div><span class="flow-arrow">→</span><div class="flow-step"><span class="flow-number">02</span><div class="flow-icon"><svg><use href="#check"/></svg></div><h3>Validate</h3><p>Run pytest, build,<br>and check the image.</p><span>GitHub Actions</span></div><span class="flow-arrow">→</span><div class="flow-step"><span class="flow-number">03</span><div class="flow-icon"><svg><use href="#cube"/></svg></div><h3>Package</h3><p>Publish the tested<br>image with a commit tag.</p><span>Azure registry</span></div><span class="flow-arrow">→</span><div class="flow-step"><span class="flow-number">04</span><div class="flow-icon"><svg><use href="#cloud"/></svg></div><h3>Deploy</h3><p>Update the container.<br>Verify the public page.</p><span>Azure Container Apps</span></div></div><div class="architecture-footer"><span><i></i>Configured workflow, not a live pipeline monitor</span><span>Browser <b>HTTPS :443</b> → Azure ingress → <b>Gunicorn :8080</b></span></div></div>
+    </section>
+    <section id="guide" class="section-anchor guide-section"><div class="section-heading"><div><p class="eyebrow">THE PROJECT, EXPLAINED</p><h2>Built to be explored.</h2></div><span class="outlined-label">B9IS121 · MSc Cybersecurity</span></div><div class="guide-grid"><div class="card guide-card"><span class="guide-number">01 / THE APP</span><h3>Simple at its core.</h3><p>Flask serves this dashboard and two JSON endpoints. Gunicorn runs it inside a non-root Docker container. The interface adds no database or account system.</p><a class="text-link" href="https://github.com/Besilkilithattil/b9is121-cicd-project/blob/main/app.py" target="_blank" rel="noopener noreferrer">Explore the application <svg><use href="#arrow"/></svg></a></div><div class="card guide-card"><span class="guide-number">02 / THE SECURITY</span><h3>Identity over passwords.</h3><p>The deployment uses GitHub OIDC to sign in to Azure. A separate managed identity pulls the private image. Registry admin credentials are disabled.</p><a class="text-link" href="https://github.com/Besilkilithattil/b9is121-cicd-project/blob/main/LEARNING_NOTES.md" target="_blank" rel="noopener noreferrer">Read the design notes <svg><use href="#arrow"/></svg></a></div><div class="card guide-card"><span class="guide-number">03 / THE LEARNING</span><h3>A project with a purpose.</h3><p>A practical exploration of automated delivery, cloud containers and HTTP testing by Besil Killthatill Eldho. Developed with AI assistance, documented in the repository.</p><a class="text-link" href="https://github.com/Besilkilithattil/b9is121-cicd-project" target="_blank" rel="noopener noreferrer">View the repository <svg><use href="#arrow"/></svg></a></div></div></section>
+    <footer class="page-footer"><span><strong>DeployLab</strong> <span>by Besil Killthatill Eldho</span></span><span>Version {{ version }} <span class="footer-divider">/</span> <code title="Build commit">{{ build_sha[:7] }}</code><a href="#overview">Back to top ↑</a></span></footer>
+  </div>
+</main>
+<div id="toast" role="status" class="toast" hidden></div>
+</body>
+</html>
