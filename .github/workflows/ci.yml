@@ -1,6 +1,6 @@
-name: Test and build container
+name: Test, build and deploy
 
-# AI-assisted learning scaffold. Cloud deployment is added after Azure setup.
+# AI-assisted learning scaffold; see LEARNING_NOTES.md.
 on:
   push:
     branches: [main]
@@ -10,11 +10,16 @@ on:
 
 permissions:
   contents: read
+  id-token: write
+
+concurrency:
+  group: deployment-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   test-and-build:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
@@ -29,7 +34,7 @@ jobs:
       - name: Test HTTP behavior
         run: python -m pytest -q
       - name: Build Linux container
-        run: docker build -t assignment-app:test .
+        run: docker build --label "org.opencontainers.image.revision=$GITHUB_SHA" -t assignment-app:test .
       - name: Check the running container
         shell: bash
         run: |
@@ -39,3 +44,45 @@ jobs:
           curl --fail --silent --show-error --retry 10 --retry-all-errors \
             --retry-delay 1 --max-time 10 --output response.html http://127.0.0.1:18080/
           grep -q 'Version ' response.html
+      - name: Sign in to Azure with OpenID Connect
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: azure/login@935127ca5bb3c4b02c9c2c10060028383878f33f # v3
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      - name: Publish the tested image and deploy it
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        env:
+          ACR_NAME: ${{ vars.ACR_NAME }}
+          ACR_LOGIN_SERVER: ${{ vars.ACR_LOGIN_SERVER }}
+          RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}
+          CONTAINER_APP: ${{ vars.AZURE_CONTAINER_APP }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          image="$ACR_LOGIN_SERVER/b9is121-app:$GITHUB_SHA"
+          az acr login --name "$ACR_NAME" --only-show-errors
+          docker tag assignment-app:test "$image"
+          docker push "$image"
+          az containerapp update --resource-group "$RESOURCE_GROUP" \
+            --name "$CONTAINER_APP" --image "$image" --only-show-errors --output none
+          host=$(az containerapp show --resource-group "$RESOURCE_GROUP" \
+            --name "$CONTAINER_APP" --query properties.configuration.ingress.fqdn --output tsv)
+          # Verify the public HTTPS response matches the container tested above.
+          matched=false
+          for attempt in {1..18}; do
+            echo "Checking public deployment (attempt $attempt/18)"
+            if curl --fail --silent --show-error --max-time 20 \
+              "https://$host/" --output cloud-response.html && cmp -s response.html cloud-response.html; then
+              matched=true
+              break
+            fi
+            sleep 10
+          done
+          test "$matched" = true
+          {
+            echo "### Deployment verified"
+            echo "URL: https://$host/"
+            echo "Image: $image"
+          } >> "$GITHUB_STEP_SUMMARY"
