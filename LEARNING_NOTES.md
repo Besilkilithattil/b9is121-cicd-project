@@ -38,3 +38,11 @@ added during guided practice. Declare assistance according to the assignment bri
 
 Write your own explanation of why a browser receives status 200 on `/`, status
 404 on an unknown address, and status 405 when posting to a read-only route.
+
+## Observed connectivity issue
+
+The first GitHub run passed the application tests and Docker build, but its HTTP
+request encountered curl error 56, a connection reset during container startup.
+The readiness check now retries connection errors for a bounded period. It still
+fails the job if no successful response arrives. This is CI evidence; perform and
+record the separate cloud Postman check required by the assignment.
