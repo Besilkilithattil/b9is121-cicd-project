@@ -3,7 +3,7 @@
 DeployLab is an interactive Flask dashboard by Besil Killthatill Eldho. It has a
 responsive interface, an API playground with response/header views, and four real
 HTTP checks. It demonstrates Docker packaging and automated deployment to Azure
-Container Apps from GitHub Actions. Current release: **2.0**.
+Container Apps from GitHub Actions. Current release: **2.1**.
 
 - `/` serves the dashboard from `templates/index.html` and `static/`.
 - `/api/health` returns JSON application health.

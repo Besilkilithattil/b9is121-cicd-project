@@ -39,7 +39,7 @@ For a manual GET request, use the Azure URL from README and this Tests script:
 pm.test("HTTP 200 OK", () => pm.response.to.have.status(200));
 pm.test("HTML response", () => pm.expect(pm.response.headers.get("Content-Type")).to.include("text/html"));
 pm.test("Welcome message", () => pm.expect(pm.response.text()).to.include("Welcome to my project"));
-pm.test("Expected version", () => pm.expect(pm.response.text()).to.include("Version 2.0"));
+pm.test("Expected version", () => pm.expect(pm.response.text()).to.include("Version 2.1"));
 ```
 
 Change the expected version when the application changes. Capture the full

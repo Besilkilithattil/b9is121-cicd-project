@@ -5,7 +5,7 @@ import os
 from flask import Flask, jsonify, render_template
 
 app = Flask(__name__)
-VERSION = "2.0"
+VERSION = "2.1"
 BUILD_SHA = os.environ.get("BUILD_SHA", "local")
 
 

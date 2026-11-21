@@ -41,7 +41,7 @@ def test_health_endpoint_has_machine_readable_status(client):
 def test_release_endpoint_identifies_current_version(client):
     response = client.get("/api/version")
     assert response.status_code == 200
-    assert response.json["version"] == "2.0"
+    assert response.json["version"] == "2.1"
     assert response.json["application"] == "DeployLab"
     assert response.json["commit"]
 

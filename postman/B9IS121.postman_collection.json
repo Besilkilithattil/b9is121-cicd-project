@@ -12,7 +12,7 @@
     },
     {
       "key": "expected_version",
-      "value": "2.0",
+      "value": "2.1",
       "type": "string"
     }
   ],
